@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
 
     public Rigidbody2D rb;
 
@@ -15,10 +16,19 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 1f;
 
 
+    public Camera ViewCam;
 
-    public Transform ViewCam;
+    public GameObject bulletImpact;
+    public int currentAmmo;
 
-    // Start is called before the first frame update
+    public Animator gunAnim;
+
+    private void Awake() 
+    {
+        instance = this;
+    }
+
+    //  Start is called before the first frame update
     void Start()
     {
         
@@ -27,7 +37,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //player movement
+        //  player movement
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         Vector3 moveHorizontal = transform.up * moveInput.x;
@@ -37,12 +47,30 @@ public class PlayerController : MonoBehaviour
         rb.velocity = (moveHorizontal + moveVertical) * moveSpeed;
 
 
-        //player view control
+        //  player view control
         mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + mouseInput.x);
 
 
-        ViewCam.localRotation = Quaternion.Euler(ViewCam.localRotation.eulerAngles - new Vector3(0f, mouseInput.y, 0f));
+        ViewCam.transform.localRotation = Quaternion.Euler(ViewCam.transform.localRotation.eulerAngles - new Vector3(0f, mouseInput.y, 0f));
+
+        //  player shooting
+        if(Input.GetMouseButtonDown(0)) {
+            if(currentAmmo > 0) {
+            Ray ray = ViewCam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
+            RaycastHit hit;
+
+            //  if somethings is hit
+            if(Physics.Raycast(ray, out hit)) {
+                //Debug.Log("Looking at " + hit.transform.name);
+                Instantiate(bulletImpact, hit.point, transform.rotation);
+            } else {
+                Debug.Log("Looking at nothing");
+            }
+                currentAmmo--;
+                gunAnim.SetTrigger("Shoot");
+            }
+        }
     }
 }
