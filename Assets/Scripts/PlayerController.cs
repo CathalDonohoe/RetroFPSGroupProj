@@ -65,6 +65,12 @@ public class PlayerController : MonoBehaviour
             if(Physics.Raycast(ray, out hit)) {
                 //Debug.Log("Looking at " + hit.transform.name);
                 Instantiate(bulletImpact, hit.point, transform.rotation);
+
+                if(hit.transform.tag == "Enemy")
+                    {
+                        hit.transform.parent.GetComponent<EnemyController>().takeDamage();
+                    }
+
             } else {
                 Debug.Log("Looking at nothing");
             }
