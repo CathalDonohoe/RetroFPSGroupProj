@@ -7,6 +7,12 @@ public class EnemyController : MonoBehaviour
 
 
     public int health = 3;
+    public GameObject explosion;
+
+    public float playerRange = 10f;
+
+    public Rigidbody2D theRB;
+    public float moveSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +23,18 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Vector3.Distance(transform.position, PlayerController.instance.transform.position) < playerRange)
+        {
+            Vector3 playerDirection = PlayerController.instance.transform.position - transform.position;
+
+            theRB.velocity = playerDirection.normalized * moveSpeed;
+
+        }
+        else
+        {
+            theRB.velocity = Vector2.zero;
+
+        }
         
     }
 
@@ -27,13 +45,9 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
-            Debug.Log("entered if");
             Destroy(gameObject);
-
+                Instantiate(explosion, transform.position, transform.rotation);
         }
-
-        else {
-                Debug.Log("fucked up");
-            }
+        
     }
 }
