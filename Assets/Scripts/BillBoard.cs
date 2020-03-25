@@ -16,6 +16,6 @@ public class BillBoard : MonoBehaviour
     void Update()
     {
         //  objects point towards player
-        transform.LookAt(PlayerController.instance.transform.position, -Vector3.back);
+        transform.LookAt(PlayerController.instance.transform.position, -Vector3.forward);
     }
 }

@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
-    public Rigidbody2D rb;
+    public Rigidbody2D theRB;
 
     public float moveSpeed = 5f;
 
@@ -15,20 +15,19 @@ public class PlayerController : MonoBehaviour
 
     public float mouseSensitivity = 1f;
 
+    public Camera viewCam;
 
-    public Camera ViewCam;
 
     public GameObject bulletImpact;
+
     public int currentAmmo;
 
-    public Animator gunAnim;
 
-    private void Awake() 
-    {
+    public Animator gunAnim;
+    private void Awake() {
         instance = this;
     }
-
-    //  Start is called before the first frame update
+    // Start is called before the first frame update
     void Start()
     {
         
@@ -37,46 +36,47 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //  player movement
+        //player movement for a 2d environment
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        Vector3 moveHorizontal = transform.up * moveInput.x;
-
+        Vector3 moveHorizontal = transform.up * -moveInput.x;
         Vector3 moveVertical = transform.right * moveInput.y;
 
-        rb.velocity = (moveHorizontal + moveVertical) * moveSpeed;
+        theRB.velocity = (moveHorizontal + moveVertical) * moveSpeed;
+
+        //camera control
+
+        mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"),Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
+
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z - mouseInput.x);
+
+        viewCam.transform.localRotation = Quaternion.Euler(viewCam.transform.localRotation.eulerAngles + new Vector3(0f, mouseInput.y, 0f));
 
 
-        //  player view control
-        mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
+        //shooting area
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(currentAmmo > 0)
+            {
 
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + mouseInput.x);
+                
+                Ray ray = viewCam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    //Debug.Log("Im looking at " + hit.transform.name);
+                    Instantiate(bulletImpact, hit.point, transform.rotation);
 
-
-        ViewCam.transform.localRotation = Quaternion.Euler(ViewCam.transform.localRotation.eulerAngles - new Vector3(0f, mouseInput.y, 0f));
-
-        //  player shooting
-        if(Input.GetMouseButtonDown(0)) {
-            if(currentAmmo > 0) {
-            Ray ray = ViewCam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
-            RaycastHit hit;
-
-            //  if somethings is hit
-            if(Physics.Raycast(ray, out hit)) {
-                //Debug.Log("Looking at " + hit.transform.name);
-                Instantiate(bulletImpact, hit.point, transform.rotation);
-
-                if(hit.transform.tag == "Enemy")
+                    if(hit.transform.tag == "Enemy")
                     {
-                        hit.transform.parent.GetComponent<EnemyController>().takeDamage();
-                    }
-
-            } else {
-                Debug.Log("Looking at nothing");
-            }
+                        hit.transform.parent.GetComponent<EnemyController>().takeDamage();                    }
+                }else{
+                    //Debug.Log("Im looking at nothing");
+                }
                 currentAmmo--;
                 gunAnim.SetTrigger("Shoot");
             }
         }
+
     }
 }
