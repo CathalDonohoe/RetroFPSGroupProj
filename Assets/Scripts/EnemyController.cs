@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
     public int health = 3;
     public GameObject explosion;
 
-    public float playerRange = 10f;
+    public float playerRange = 30f;
 
     public Rigidbody2D theRB;
     public float moveSpeed;
