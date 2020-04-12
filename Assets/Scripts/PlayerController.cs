@@ -76,23 +76,26 @@ public class PlayerController : MonoBehaviour
             //shooting area
             if(Input.GetMouseButtonDown(0))
             {
-                if(currentAmmo > 0)
-                {
-
-                    
+                SoundController.instance.PlayGunShot();
+                if (currentAmmo > 0)
+                {   
                     Ray ray = viewCam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit))
                     {
-                        //Debug.Log("Im looking at " + hit.transform.name);
+                        //Debug.Log("I'm looking at " + hit.transform.name);
                         Instantiate(bulletImpact, hit.point, transform.rotation);
 
-                        if(hit.transform.tag == "Enemy")
+                        if (hit.transform.tag == "Enemy")
                         {
-                            hit.transform.parent.GetComponent<EnemyController>().takeDamage();                    }
-                    }else{
+                            hit.transform.parent.GetComponent<EnemyController>().takeDamage();
+                        }
+                    }
+                    else
+                    {
                         //Debug.Log("Im looking at nothing");
                     }
+
                     currentAmmo--;
                     gunAnim.SetTrigger("Shoot");
                     updateAmmoUI();
@@ -122,6 +125,8 @@ public class PlayerController : MonoBehaviour
             currentHealth = 0;
         }
         healthText.text = currentHealth.ToString();
+
+        SoundController.instance.PlayPlayerHurt();
     }
 
     public void addHealth(int healAmount)
