@@ -117,9 +117,11 @@ public class PlayerController : MonoBehaviour
 
         if(currentHealth <= 0)
         {
-            deadScreen.SetActive(true);
             hasDied = true;
-            currentHealth = 0;
+            Application.LoadLevel(Application.loadedLevel);
+            currentAmmo = 25;
+            currentHealth = 100;
+            
         }
         healthText.text = currentHealth.ToString();
     }

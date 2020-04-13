@@ -21,6 +21,6 @@ public class ReloadScene : MonoBehaviour
     public void ResetScene()
     {
         Debug.Log("Enter function");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Application.LoadLevel(Application.loadedLevel);
     }
 }
