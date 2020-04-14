@@ -3354,7 +3354,7 @@ MonoBehaviour:
   enemyShot: {fileID: 1992842549}
   gunShot: {fileID: 1176577546}
   playerHurt: {fileID: 930445713}
-  enemyFire: {fileID: 0}
+  enemyFire: {fileID: 1912145378}
 --- !u!4 &1153218539
 Transform:
   m_ObjectHideFlags: 0

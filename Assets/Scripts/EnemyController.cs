@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
     private float shotCounter;
     public GameObject bullet;
     public Transform firepoint;
-
+    public static int enemyKilledCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -63,8 +63,10 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
+
             Destroy(gameObject);
             Instantiate(explosion, transform.position, transform.rotation);
+            enemyKilledCount++;
 
             SoundController.instance.PlayEnemyDeath();
         } else
