@@ -5545,6 +5545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dd46ad7d89081419a92cbaca49dc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyCount: 18
 --- !u!95 &1958467558
 Animator:
   serializedVersion: 3

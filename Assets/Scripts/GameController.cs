@@ -6,10 +6,16 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public int enemyCount;
+
+    public static float levelTime;
+    public static float finalLevelTime;
+
+    private bool levelComplete;
+    
     // Start is called before the first frame update
     void Start()
     {
-
+        levelComplete = false;
     }
 
     // Update is called once per frame
@@ -21,10 +27,12 @@ public class GameController : MonoBehaviour
         {
             unlockCursor();
         }
-
-        if (Input.GetMouseButton(0))
+        if (levelComplete == false)
         {
-            lockCursor();
+            if (Input.GetMouseButton(0))
+            {
+                lockCursor();
+            }
         }
     }
 
@@ -44,13 +52,18 @@ public class GameController : MonoBehaviour
 
     public void LevelPassed()
     {
-        //if (EnemyController.enemyKilledCount == enemyCount)
-        if (EnemyController.enemyKilledCount == 1)
+        if (EnemyController.enemyKilledCount == enemyCount)
         {
-            Debug.Log("enemyCount + " + enemyCount);
-            Debug.Log("enemyKilledCount + " + EnemyController.enemyKilledCount);
-            SceneManager.LoadSceneAsync("LevelComplete", LoadSceneMode.Additive);
-            EnemyController.enemyKilledCount--;
+            // Debug.Log("enemyCount + " + enemyCount);
+            // Debug.Log("enemyKilledCount + " + EnemyController.enemyKilledCount);
+            finalLevelTime = levelTime;
+            SceneManager.LoadScene("LevelComplete", LoadSceneMode.Single);
+            levelComplete = true;
+
+        }
+        else if (levelComplete == false)
+        {
+            levelTime += Time.deltaTime;
         }
     }
 }
