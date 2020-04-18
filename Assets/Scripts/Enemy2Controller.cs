@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class Enemy2Controller : MonoBehaviour
 {
 
 
@@ -22,7 +22,6 @@ public class EnemyController : MonoBehaviour
     public static int enemyKilledCount = 0;
 
     public int damageAmount;
-
 
     // Start is called before the first frame update
     void Start()
