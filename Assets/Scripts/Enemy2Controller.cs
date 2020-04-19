@@ -19,7 +19,7 @@ public class Enemy2Controller : MonoBehaviour
     private float shotCounter;
     public GameObject bullet;
     public Transform firepoint;
-    public static int enemyKilledCount = 0;
+    public static int enemy2KilledCount = 0;
 
     public int damageAmount;
 
@@ -68,7 +68,7 @@ public class Enemy2Controller : MonoBehaviour
 
             Destroy(gameObject);
             Instantiate(explosion, transform.position, transform.rotation);
-            enemyKilledCount++;
+            enemy2KilledCount++;
 
             SoundController.instance.PlayEnemyDeath();
         } else

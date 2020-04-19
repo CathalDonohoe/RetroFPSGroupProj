@@ -6,11 +6,14 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public int enemyCount;
+    public int enemy2Count;
 
     public static float levelTime;
     public static float finalLevelTime;
 
     private bool levelComplete;
+
+    public GameObject LoadingScreen;
     
     // Start is called before the first frame update
     void Start()
@@ -23,9 +26,9 @@ public class GameController : MonoBehaviour
     {
         LevelPassed();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+       if (Input.GetKeyDown(KeyCode.Escape))
         {
-            unlockCursor();
+           unlockCursor();
         }
         if (levelComplete == false)
         {
@@ -49,21 +52,68 @@ public class GameController : MonoBehaviour
         Cursor.visible = true;
     }
 
+    
 
     public void LevelPassed()
     {
-        if (EnemyController.enemyKilledCount == enemyCount)
-        {
-            // Debug.Log("enemyCount + " + enemyCount);
-            // Debug.Log("enemyKilledCount + " + EnemyController.enemyKilledCount);
-            finalLevelTime = levelTime;
-            SceneManager.LoadScene("Level2");
-            levelComplete = true;
+        Scene currentScene = SceneManager.GetActiveScene();
 
-        }
-        else if (levelComplete == false)
+        string sceneName = currentScene.name;
+
+        if (sceneName == "Level1")
         {
-            levelTime += Time.deltaTime;
+            Debug.Log("Level 1");
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+            {
+                LoadingScreen.SetActive(true);
+                finalLevelTime = levelTime;
+                levelComplete = true;
+
+                SceneManager.UnloadScene("Level1");
+
+                SceneManager.LoadScene("LevelComplete");
+        
+            }
+            else if (levelComplete == false)
+            {
+                levelTime += Time.deltaTime;
+            }
         }
+
+        else if (sceneName == "Level2")
+        {
+            Debug.Log("inscene2");
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+            {
+                LoadingScreen.SetActive(true);
+                finalLevelTime = levelTime;
+                levelComplete = true;
+
+                SceneManager.LoadScene("Level2Complete");
+        
+            }
+            else if (levelComplete == false)
+            {
+                levelTime += Time.deltaTime;
+            }
+        }
+
+        else if (sceneName == "Level3")
+        {
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+            {
+                LoadingScreen.SetActive(true);
+                finalLevelTime = levelTime;
+                levelComplete = true;
+
+                SceneManager.LoadScene("Complete");
+        
+            }
+            else if (levelComplete == false)
+            {
+                levelTime += Time.deltaTime;
+            }
+        }
+        
     }
 }
