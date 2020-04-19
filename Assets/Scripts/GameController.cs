@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
             // Debug.Log("enemyCount + " + enemyCount);
             // Debug.Log("enemyKilledCount + " + EnemyController.enemyKilledCount);
             finalLevelTime = levelTime;
-            SceneManager.LoadScene("LevelComplete", LoadSceneMode.Single);
+            SceneManager.LoadScene("Level2");
             levelComplete = true;
 
         }
