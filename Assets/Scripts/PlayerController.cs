@@ -33,7 +33,9 @@ public class PlayerController : MonoBehaviour
     public GameObject deadScreen;
     private bool hasDied;
 
-    public Text healthText, ammoText;
+    public Text healthText, ammoText, enemyText;
+
+    bool waitActive = false;
 
 
 
@@ -44,6 +46,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        updateEnemyUI(); 
         currentHealth = maxHealth;
         healthText.text = currentHealth.ToString();
 
@@ -55,8 +58,6 @@ public class PlayerController : MonoBehaviour
     {
        if(!hasDied) 
        {
-           
-        
             //player movement for a 2d environment
             moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
@@ -90,8 +91,10 @@ public class PlayerController : MonoBehaviour
 
                         if(hit.transform.tag == "Enemy")
                         {
-                            hit.transform.parent.GetComponent<EnemyController>().takeDamage();                    
+                            hit.transform.parent.GetComponent<EnemyController>().takeDamage();
+                            updateEnemyUI();                    
                         }
+                        
                         
                     }
                     else{
@@ -122,6 +125,19 @@ public class PlayerController : MonoBehaviour
         if(currentHealth <= 0)
         {
             hasDied = true;
+            //if(hasDied == true)
+            //{
+                //Cursor.lockState = CursorLockMode.None;
+                //Cursor.visible = true;
+                //deadScreen.SetActive(true);
+                
+            //}
+
+            if (!waitActive)
+            {
+                deadScreen.SetActive(true); 
+            }
+            
             Application.LoadLevel(Application.loadedLevel);
             currentAmmo = 25;
             currentHealth = 100;
@@ -143,5 +159,17 @@ public class PlayerController : MonoBehaviour
     public void updateAmmoUI()
     {
         ammoText.text = currentAmmo.ToString();
+    }
+
+    public void updateEnemyUI()
+    {
+        enemyText.text = GameObject.FindGameObjectsWithTag("Enemy").Length.ToString();
+    }
+
+    IEnumerator Wait()
+    {
+        waitActive = true;
+        yield return new WaitForSeconds (3.0f);
+        waitActive = false;
     }
 }

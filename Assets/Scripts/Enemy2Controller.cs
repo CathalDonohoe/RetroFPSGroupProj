@@ -23,6 +23,8 @@ public class Enemy2Controller : MonoBehaviour
 
     public int damageAmount;
 
+    public static bool isShot=false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,8 +75,12 @@ public class Enemy2Controller : MonoBehaviour
             SoundController.instance.PlayEnemyDeath();
         } else
         {
+            isShot = true;
             SoundController.instance.PlayEnemyShot();
+            
         }
+        
+        
         
     }
 

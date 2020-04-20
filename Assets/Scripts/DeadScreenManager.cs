@@ -5,18 +5,17 @@ using UnityEngine;
 
 public class DeadScreenManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Quit()
     {
-        
+        print("quit");
+        Application.Quit();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Restart()
     {
-        
+        print("menu");
+        Application.LoadLevel(Application.loadedLevel);
     }
-
     public void ButtonClickedQ()
     {
         Debug.Log("in ButtonClicked");

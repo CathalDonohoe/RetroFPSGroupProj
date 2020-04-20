@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyTestController : MonoBehaviour
 {
 
 
@@ -23,8 +23,9 @@ public class EnemyController : MonoBehaviour
 
     public int damageAmount;
 
-
     public static bool isShot=false;
+
+    
 
 
     // Start is called before the first frame update
@@ -63,13 +64,13 @@ public class EnemyController : MonoBehaviour
     }
 
 
-   public void takeDamage()
+    public void takeDamage()
     {
         health--;
-        isShot = true;
 
         if (health <= 0)
         {
+
             Destroy(gameObject);
             Instantiate(explosion, transform.position, transform.rotation);
             enemyKilledCount++;
@@ -77,10 +78,13 @@ public class EnemyController : MonoBehaviour
             SoundController.instance.PlayEnemyDeath();
         } else
         {
+            isShot = true;
             SoundController.instance.PlayEnemyShot();
-            isShot = false;
+            
         }
-       
+        
+        
+        
     }
 
     void OnTriggerEnter2D(Collider2D col)
